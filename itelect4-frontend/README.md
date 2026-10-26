@@ -1,3 +1,3 @@
 # ITELECT4 Backend
 
-* **Live Backend URL:** https://backend-psi-liart-28.vercel.app
+* **Live Backend URL:** https://itelect4-frontend-zeta.vercel.app
