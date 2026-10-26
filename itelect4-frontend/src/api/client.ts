@@ -1,3 +1,5 @@
+import type { AiReview } from '../types';
+
 const API_URL = import.meta.env.VITE_API_URL || 'https://backend-psi-liart-28.vercel.app';
 
 export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
@@ -23,4 +25,12 @@ export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): 
   }
 
   return response.json();
+}
+
+// ===== SESSION 11 / GT5: AI Review Endpoint =====
+export function askAi(prompt: string): Promise<AiReview> {
+  return apiFetch<AiReview>('/api/ai', {
+    method: 'POST',
+    body: JSON.stringify({ prompt }),
+  });
 }

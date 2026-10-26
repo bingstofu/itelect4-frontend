@@ -15,6 +15,8 @@ export default function Navbar() {
       <Link to="/">Courses</Link>
       {token && <Link to="/submissions">Submissions</Link>}
       {token && <Link to="/submissions/new">New Submission</Link>}
+            {token && <Link to="/review">AI Review</Link>}
+
       
       <div style={{ marginLeft: 'auto', display: 'flex', gap: '1rem', alignItems: 'center' }}>
         {token ? (

@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import SubmissionsPage from './pages/SubmissionsPage';
 import SubmissionFormPage from './pages/SubmissionFormPage';
+import ReviewPage from './pages/ReviewPage'; // <-- Added Import
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/submissions" element={<SubmissionsPage />} />
             <Route path="/submissions/new" element={<SubmissionFormPage />} />
+            <Route path="/review" element={<ReviewPage />} /> {/* <-- Added Route */}
           </Route>
         </Routes>
       </main>
