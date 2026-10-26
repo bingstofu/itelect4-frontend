@@ -26,3 +26,11 @@ export interface AuthResponse {
   token: string;
   user: User;
 }
+
+// ===== SESSION 11 / GT5: AI Review Response Type =====
+export interface AiReview {
+  summary: string;
+  strengths: string[];
+  improvements: string[];
+  readiness: 'ready' | 'almost' | 'not-yet';
+}
