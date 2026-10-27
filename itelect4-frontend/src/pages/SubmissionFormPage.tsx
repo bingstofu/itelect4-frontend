@@ -8,6 +8,8 @@ export default function SubmissionFormPage() {
   const [courseCode, setCourseCode] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [priority, setPriority] = useState('medium');
+  const [category, setCategory] = useState('project');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -32,6 +34,8 @@ export default function SubmissionFormPage() {
           title,
           content,
           repoUrl: content,
+          priority,
+          category,
         }),
       });
       navigate('/submissions');
@@ -73,6 +77,26 @@ export default function SubmissionFormPage() {
               onChange={(e) => setTitle(e.target.value)}
               required
             />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div>
+              <label htmlFor="priority" style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Priority</label>
+              <select id="priority" value={priority} onChange={(e) => setPriority(e.target.value)} className="select-field">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="category" style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Category</label>
+              <select id="category" value={category} onChange={(e) => setCategory(e.target.value)} className="select-field">
+                <option value="project">Project</option>
+                <option value="assignment">Assignment</option>
+                <option value="lab">Lab</option>
+              </select>
+            </div>
           </div>
 
           <div>
