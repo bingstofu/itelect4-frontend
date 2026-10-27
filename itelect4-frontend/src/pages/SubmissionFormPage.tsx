@@ -8,8 +8,8 @@ export default function SubmissionFormPage() {
   const [courseCode, setCourseCode] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [priority, setPriority] = useState('medium');
-  const [category, setCategory] = useState('project');
+  const [priority, setPriority] = useState<number>(2); // Numeric priority
+  const [category, setCategory] = useState<string>('study'); // Valid enum string
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -34,8 +34,8 @@ export default function SubmissionFormPage() {
           title,
           content,
           repoUrl: content,
-          priority,
-          category,
+          priority: Number(priority), // Sent as a Number
+          category, // 'study', 'work', or 'personal'
         }),
       });
       navigate('/submissions');
@@ -82,19 +82,29 @@ export default function SubmissionFormPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <div>
               <label htmlFor="priority" style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Priority</label>
-              <select id="priority" value={priority} onChange={(e) => setPriority(e.target.value)} className="select-field">
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
+              <select
+                id="priority"
+                value={priority}
+                onChange={(e) => setPriority(Number(e.target.value))}
+                className="select-field"
+              >
+                <option value={1}>1 (Low)</option>
+                <option value={2}>2 (Medium)</option>
+                <option value={3}>3 (High)</option>
               </select>
             </div>
 
             <div>
               <label htmlFor="category" style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Category</label>
-              <select id="category" value={category} onChange={(e) => setCategory(e.target.value)} className="select-field">
-                <option value="project">Project</option>
-                <option value="assignment">Assignment</option>
-                <option value="lab">Lab</option>
+              <select
+                id="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="select-field"
+              >
+                <option value="study">Study</option>
+                <option value="work">Work</option>
+                <option value="personal">Personal</option>
               </select>
             </div>
           </div>
