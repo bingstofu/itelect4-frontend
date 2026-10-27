@@ -3,7 +3,8 @@ export interface Course {
   code: string;
   title: string;
   units: number;
-  semester: string;
+  semester?: string;
+  description?: string;
 }
 
 export interface User {
@@ -19,6 +20,9 @@ export interface Submission {
   courseCode: string;
   title: string;
   content: string;
+  repoUrl?: string;
+  priority?: number;
+  category?: string;
   createdAt: string;
 }
 
@@ -27,7 +31,6 @@ export interface AuthResponse {
   user: User;
 }
 
-// ===== SESSION 11 / GT5: AI Review Response Type =====
 export interface AiReview {
   summary: string;
   strengths: string[];
