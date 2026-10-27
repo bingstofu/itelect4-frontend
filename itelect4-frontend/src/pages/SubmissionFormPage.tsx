@@ -26,17 +26,20 @@ export default function SubmissionFormPage() {
     e.preventDefault();
     setError('');
 
+    // Combine title and repository URL into the persisted 'title' field
+    const formattedTitle = content.trim() ? `${title.trim()} — ${content.trim()}` : title.trim();
+
     try {
       await apiFetch('/api/submissions', {
         method: 'POST',
         body: JSON.stringify({
-          courseCode,
-          title,
-          content,
-          description: content,
-          repoUrl: content,
+          title: formattedTitle,
           priority: Number(priority),
           category,
+          courseCode,
+          content,
+          repoUrl: content,
+          description: content,
         }),
       });
       navigate('/submissions');
