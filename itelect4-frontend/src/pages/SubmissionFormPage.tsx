@@ -36,36 +36,58 @@ export default function SubmissionFormPage() {
   };
 
   return (
-    <div style={{ padding: '1rem', maxWidth: '500px' }}>
-      <h2>Create Submission</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <label>
-          Course:
-          <select value={courseCode} onChange={(e) => setCourseCode(e.target.value)} style={{ width: '100%', marginTop: '0.25rem' }}>
-            {courses.map((course) => (
-              <option key={course.code} value={course.code}>
-                {course.code} - {course.title}
-              </option>
-            ))}
-          </select>
-        </label>
-        <input
-          type="text"
-          placeholder="Submission Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-        <textarea
-          placeholder="Content / Submission details"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          rows={5}
-          required
-        />
-        <button type="submit">Submit Work</button>
-      </form>
+    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+      <div className="card">
+        <h2 style={{ marginBottom: '0.5rem' }}>Create Submission</h2>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.9rem' }}>
+          Submit your repository link or project details for grading
+        </p>
+
+        {error && <div className="error-box">{error}</div>}
+
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <div>
+            <label style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Course</label>
+            <select value={courseCode} onChange={(e) => setCourseCode(e.target.value)} className="select-field">
+              {courses.map((course) => (
+                <option key={course.code} value={course.code}>
+                  {course.code} - {course.title}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="title" style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Submission Title</label>
+            <input
+              id="title"
+              type="text"
+              className="input-field"
+              placeholder="e.g. GT6 Testing Implementation"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor="content" style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Content / Repository Link</label>
+            <textarea
+              id="content"
+              className="textarea-field"
+              placeholder="https://github.com/username/repository"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              rows={5}
+              required
+            />
+          </div>
+
+          <button type="submit" className="btn-primary" style={{ width: '100%', marginTop: '0.5rem' }}>
+            Submit Work
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

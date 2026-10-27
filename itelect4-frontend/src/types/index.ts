@@ -34,3 +34,12 @@ export interface AiReview {
   improvements: string[];
   readiness: 'ready' | 'almost' | 'not-yet';
 }
+
+export interface ApiSubmission {
+  id: string;
+  studentId: string;
+  courseCode: string;
+  repoUrl: string;
+  submittedAt: string;
+  score?: number;
+}

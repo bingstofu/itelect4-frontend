@@ -14,24 +14,29 @@ export default function SubmissionsPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p>Loading submissions...</p>;
-  if (error) return <p style={{ color: 'red' }}>{error}</p>;
+  if (loading) return <p style={{ color: 'var(--text-muted)' }}>Loading submissions...</p>;
+  if (error) return <div className="error-box">{error}</div>;
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h2>My Submissions</h2>
+    <div>
+      <h2 style={{ marginBottom: '1.5rem' }}>My Submissions</h2>
       {submissions.length === 0 ? (
-        <p>No submissions found.</p>
+        <p style={{ color: 'var(--text-muted)' }}>No submissions found.</p>
       ) : (
-        <ul>
+        <div style={{ display: 'grid', gap: '1rem' }}>
           {submissions.map((sub) => (
-            <li key={sub.id} style={{ marginBottom: '1rem', borderBottom: '1px solid #eee' }}>
-              <h3>{sub.title} ({sub.courseCode})</h3>
-              <p>{sub.content}</p>
-              <small>Submitted on: {new Date(sub.createdAt).toLocaleDateString()}</small>
-            </li>
+            <div key={sub.id} className="card" style={{ padding: '1.25rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                <h3 style={{ fontSize: '1.1rem' }}>{sub.title}</h3>
+                <span className="badge" style={{ backgroundColor: 'rgba(37, 99, 235, 0.2)', color: '#60a5fa', border: '1px solid #2563eb' }}>
+                  {sub.courseCode}
+                </span>
+              </div>
+              <p style={{ color: '#cbd5e1', marginBottom: '0.75rem', wordBreak: 'break-all' }}>{sub.content}</p>
+              <small style={{ color: 'var(--text-muted)' }}>Submitted on: {new Date(sub.createdAt).toLocaleDateString()}</small>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

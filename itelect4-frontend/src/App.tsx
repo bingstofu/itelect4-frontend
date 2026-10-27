@@ -7,13 +7,13 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import SubmissionsPage from './pages/SubmissionsPage';
 import SubmissionFormPage from './pages/SubmissionFormPage';
-import ReviewPage from './pages/ReviewPage'; // <-- Added Import
+import ReviewPage from './pages/ReviewPage';
 
 export default function App() {
   return (
     <Router>
       <Navbar />
-      <main style={{ padding: '1rem' }}>
+      <main className="container">
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<CoursesPage />} />
@@ -25,7 +25,7 @@ export default function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/submissions" element={<SubmissionsPage />} />
             <Route path="/submissions/new" element={<SubmissionFormPage />} />
-            <Route path="/review" element={<ReviewPage />} /> {/* <-- Added Route */}
+            <Route path="/review" element={<ReviewPage />} />
           </Route>
         </Routes>
       </main>
