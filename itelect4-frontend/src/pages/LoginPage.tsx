@@ -15,6 +15,15 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
 
+    if (!email || !email.includes('@')) {
+      setError('That is not an email address.');
+      return;
+    }
+    if (password.length < 8) {
+      setError('At least 8 characters.');
+      return;
+    }
+
     try {
       const data = await apiFetch<AuthResponse>('/api/auth/login', {
         method: 'POST',
@@ -32,19 +41,21 @@ export default function LoginPage() {
       <h2>Login</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <label htmlFor="email">Email</label>
         <input
+          id="email"
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
         />
+        <label htmlFor="password">Password</label>
         <input
+          id="password"
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
         />
         <button type="submit">Login</button>
       </form>
