@@ -8,8 +8,8 @@ export default function SubmissionFormPage() {
   const [courseCode, setCourseCode] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [priority, setPriority] = useState<number>(2); // Numeric priority
-  const [category, setCategory] = useState<string>('study'); // Valid enum string
+  const [priority, setPriority] = useState<number>(2);
+  const [category, setCategory] = useState<string>('study');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -33,9 +33,10 @@ export default function SubmissionFormPage() {
           courseCode,
           title,
           content,
+          description: content,
           repoUrl: content,
-          priority: Number(priority), // Sent as a Number
-          category, // 'study', 'work', or 'personal'
+          priority: Number(priority),
+          category,
         }),
       });
       navigate('/submissions');

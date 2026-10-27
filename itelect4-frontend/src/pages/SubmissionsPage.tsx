@@ -18,10 +18,18 @@ export default function SubmissionsPage() {
   if (loading) return <p style={{ color: 'var(--text-muted)' }}>Loading submissions...</p>;
   if (error) return <div className="error-box">{error}</div>;
 
-  const formatUrl = (text?: string) => {
+  const getDisplayContent = (sub: any) => {
+    return sub.repoUrl || sub.content || sub.description || sub.link || sub.url || '';
+  };
+
+  const getValidUrl = (text: string) => {
     if (!text) return null;
-    if (text.startsWith('http://') || text.startsWith('https://')) {
-      return text;
+    const trimmed = text.trim();
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+      return trimmed;
+    }
+    if (trimmed.includes('github.com') || trimmed.startsWith('www.')) {
+      return `https://${trimmed}`;
     }
     return null;
   };
@@ -45,7 +53,8 @@ export default function SubmissionsPage() {
       ) : (
         <div style={{ display: 'grid', gap: '1rem' }}>
           {submissions.map((sub: any) => {
-            const linkUrl = formatUrl(sub.repoUrl || sub.content);
+            const rawText = getDisplayContent(sub);
+            const linkUrl = getValidUrl(rawText);
 
             return (
               <div key={sub.id || sub._id} className="card" style={{ padding: '1.5rem' }}>
@@ -58,7 +67,7 @@ export default function SubmissionsPage() {
                       <span className="badge" style={{ backgroundColor: 'rgba(37, 99, 235, 0.2)', color: '#60a5fa', border: '1px solid #2563eb' }}>
                         {sub.courseCode || 'ITELECT4'}
                       </span>
-                      {sub.priority && (
+                      {sub.priority !== undefined && sub.priority !== null && (
                         <span className="badge" style={{ backgroundColor: 'rgba(148, 163, 184, 0.15)', color: '#cbd5e1', border: '1px solid #475569' }}>
                           Priority: {sub.priority}
                         </span>
@@ -95,7 +104,9 @@ export default function SubmissionsPage() {
                       🔗 {linkUrl}
                     </a>
                   ) : (
-                    <p style={{ color: '#cbd5e1', wordBreak: 'break-all' }}>{sub.content || sub.repoUrl || 'No content provided'}</p>
+                    <p style={{ color: '#cbd5e1', wordBreak: 'break-all' }}>
+                      {rawText || 'No content provided'}
+                    </p>
                   )}
                 </div>
               </div>
