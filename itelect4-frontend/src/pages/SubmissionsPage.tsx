@@ -18,20 +18,30 @@ export default function SubmissionsPage() {
   if (loading) return <p style={{ color: 'var(--text-muted)' }}>Loading submissions...</p>;
   if (error) return <div className="error-box">{error}</div>;
 
-  const getDisplayContent = (sub: any) => {
-    return sub.repoUrl || sub.content || sub.description || sub.link || sub.url || '';
-  };
+  const parseTitleAndLink = (rawTitle: string = '', sub: any) => {
+    const directContent = sub.repoUrl || sub.content || sub.description || '';
+    const textToSearch = `${rawTitle} ${directContent}`;
+    const urlRegex = /(https?:\/\/[^\s]+|github\.com[^\s]+)/i;
+    const match = textToSearch.match(urlRegex);
 
-  const getValidUrl = (text: string) => {
-    if (!text) return null;
-    const trimmed = text.trim();
-    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
-      return trimmed;
+    let linkUrl: string | null = null;
+    if (match) {
+      linkUrl = match[0].startsWith('http') ? match[0] : `https://${match[0]}`;
     }
-    if (trimmed.includes('github.com') || trimmed.startsWith('www.')) {
-      return `https://${trimmed}`;
+
+    let cleanTitle = rawTitle;
+    if (match && rawTitle.includes(match[0])) {
+      cleanTitle = rawTitle
+        .replace(match[0], '')
+        .replace(/\s*[—\-\|:]\s*$/, '')
+        .replace(/^\s*[—\-\|:]\s*/, '')
+        .trim();
     }
-    return null;
+
+    return {
+      title: cleanTitle || 'Submission Work',
+      linkUrl,
+    };
   };
 
   return (
@@ -53,28 +63,22 @@ export default function SubmissionsPage() {
       ) : (
         <div style={{ display: 'grid', gap: '1rem' }}>
           {submissions.map((sub: any) => {
-            const rawText = getDisplayContent(sub);
-            const linkUrl = getValidUrl(rawText);
+            const { title: displayTitle, linkUrl } = parseTitleAndLink(sub.title, sub);
 
             return (
               <div key={sub.id || sub._id} className="card" style={{ padding: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
                   <div>
                     <h3 style={{ fontSize: '1.2rem', marginBottom: '0.25rem', color: '#f8fafc' }}>
-                      {sub.title || 'Untitled Submission'}
+                      {displayTitle}
                     </h3>
                     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap', marginTop: '0.4rem' }}>
                       <span className="badge" style={{ backgroundColor: 'rgba(37, 99, 235, 0.2)', color: '#60a5fa', border: '1px solid #2563eb' }}>
-                        {sub.courseCode || 'ITELECT4'}
+                        {sub.category ? sub.category.toUpperCase() : 'STUDY'}
                       </span>
                       {sub.priority !== undefined && sub.priority !== null && (
                         <span className="badge" style={{ backgroundColor: 'rgba(148, 163, 184, 0.15)', color: '#cbd5e1', border: '1px solid #475569' }}>
                           Priority: {sub.priority}
-                        </span>
-                      )}
-                      {sub.category && (
-                        <span className="badge" style={{ backgroundColor: 'rgba(168, 85, 247, 0.15)', color: '#c084fc', border: '1px solid #a855f7' }}>
-                          {sub.category}
                         </span>
                       )}
                     </div>
@@ -84,9 +88,9 @@ export default function SubmissionsPage() {
                   </small>
                 </div>
 
-                <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '0.5rem' }}>Repository / Work Link:</p>
-                  {linkUrl ? (
+                {linkUrl && (
+                  <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '0.5rem' }}>Repository / Work Link:</p>
                     <a
                       href={linkUrl}
                       target="_blank"
@@ -103,12 +107,8 @@ export default function SubmissionsPage() {
                     >
                       🔗 {linkUrl}
                     </a>
-                  ) : (
-                    <p style={{ color: '#cbd5e1', wordBreak: 'break-all' }}>
-                      {rawText || 'No content provided'}
-                    </p>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             );
           })}
