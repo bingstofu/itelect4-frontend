@@ -27,7 +27,12 @@ export default function SubmissionFormPage() {
     try {
       await apiFetch('/api/submissions', {
         method: 'POST',
-        body: JSON.stringify({ courseCode, title, content }),
+        body: JSON.stringify({
+          courseCode,
+          title,
+          content,
+          repoUrl: content,
+        }),
       });
       navigate('/submissions');
     } catch (err: any) {
